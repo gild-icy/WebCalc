@@ -5,9 +5,9 @@ namespace WebCalc
     public class Calculator : ICalculator
     {
         private readonly Dictionary<string, IOperation> _operations;
-        private readonly ExpressionParser _parser;
+        private readonly IExpressionParser _parser;
 
-        public Calculator()
+        public Calculator(IExpressionParser parser)
         {
             _operations = new Dictionary<string, IOperation>
             {
@@ -17,7 +17,7 @@ namespace WebCalc
                 { "/", new Division() }
             };
 
-            _parser = new ExpressionParser();
+            _parser = parser;
         }
 
         private double PerformOperation(string operation, double operand1, double operand2)

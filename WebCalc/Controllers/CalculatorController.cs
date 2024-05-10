@@ -9,10 +9,10 @@ public class CalculatorController : ControllerBase
     private readonly IMemoryCache _cache;
     private readonly ICalculator _calculator;
 
-    public CalculatorController(IMemoryCache cache)
+    public CalculatorController(IMemoryCache cache, ICalculator calculator)
     {
         _cache = cache;
-        _calculator = new Calculator();
+        _calculator = calculator;
     }
 
     [HttpPost]
