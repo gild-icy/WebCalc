@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculator</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+<h1>Calculator</h1>
+<form id="form1" method="GET" action="http://localhost:9000/api/calculate"
+      enctype="application/x-www-form-urlencoded">
+    <label for="expression" style="display:inline">Expression:</label>
+    <input name="expression" id="expression" type="text" />
+    <input type="submit" value="Calculate" />
+</form>
+
+<label id="result"></label>
+
+<script>
+    document.getElementById('form1').addEventListener('submit', function(event) {
+        event.preventDefault(); 
+
+        let expression = document.getElementById('expression').value;
+        
+        if (expression.trim() !== '') {
+            let encodedExpression = encodeURIComponent(expression);
+
+            fetch(`http://localhost:5114/api/Calculator?expression=${encodedExpression}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('result').textContent = "Result: " + data;
+                })
+                .catch(() => {
+                    document.getElementById('result').textContent = "Invalid expression";
+                });
+        } else {
+            document.getElementById('result').textContent = "Please enter an expression";
+        }
+    });
+</script>
+
+</body>
+</html>
